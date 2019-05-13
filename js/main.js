@@ -16,15 +16,22 @@ function searchCounties() {
 }
 
 function showCountriesList(resp) {
+    var countryName = document.getElementById('country-name').value;
     countriesList.innerHTML = '';
-    // var result = resp.filter(elem => elem.item === name);
+    var result = resp.filter(function (elem) {
+        console.log('elem.name', elem.name);
+        console.log('countryName', countryName);
+        elem.name.includes(countryName);
+        return elem.name
+    });
     resp.forEach(function (item) {
         var elementLi = document.createElement('li');
-        elementLi.innerText = item.name;
+        elementLi.innerText = result;
         elementLi.addEventListener('click', function () {
             var detailsCountry = elementLi.innerText = ('Capital: ' + item.capital + ', Number of Humans: ' + item.population + ', Region: ' + item.region);
             countriesList.innerHTML = detailsCountry;
         });
         countriesList.appendChild(elementLi);
     });
+    console.log('result', result);
 }
