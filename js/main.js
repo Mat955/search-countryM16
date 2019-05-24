@@ -6,32 +6,37 @@ var countriesList = document.getElementById('countries');
 document.getElementById('search').addEventListener('click', searchCounties);
 
 function searchCounties() {
-    var countryName = document.getElementById('country-name').value;
-    if (!countryName.length) countryName = 'Poland';
-    fetch(url + countryName)
-        .then(function (resp) {
-            return resp.json();
+    var inputValue = document.getElementById('country-name').value;
+    if (!inputValue.length) inputValue = 'Poland';
+    fetch(url + inputValue)
+        .then(function (response) {
+            return response.json();
         })
         .then(showCountriesList)
 }
 
-
-function showCountriesList(resp) {
-    var countryName = document.getElementById('country-name').value;
+function showCountriesList(response) {
+    var inputValue = document.getElementById('country-name').value;
     countriesList.innerHTML = '';
-    var result = resp.filter((elem) => {
-        console.log('elem.name', elem.name);
-        console.log('countryName', countryName);
-        return elem.name.includes(countryName);
-    });
-    resp.forEach(function (item) {
+
+    response
+        .filter(matchingByName)
+        .forEach(createAndAppendElement);
+
+    function matchingByName(elem) {
+        var countryNameLower = elem.name.toLowerCase();
+        var inputValueLower = inputValue.toLowerCase();
+
+        return countryNameLower.includes(inputValueLower);
+    }
+
+    function createAndAppendElement(item) {
         var elementLi = document.createElement('li');
-        elementLi.innerText = result;
+        elementLi.innerText = item.name;
         elementLi.addEventListener('click', function () {
             var detailsCountry = elementLi.innerText = ('Capital: ' + item.capital + ', Number of Humans: ' + item.population + ', Region: ' + item.region);
             countriesList.innerHTML = detailsCountry;
         });
         countriesList.appendChild(elementLi);
-    });
-    console.log('result', result);
+    };
 }
