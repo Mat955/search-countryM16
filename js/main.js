@@ -15,14 +15,14 @@ function searchCounties() {
         .then(showCountriesList)
 }
 
+
 function showCountriesList(resp) {
     var countryName = document.getElementById('country-name').value;
     countriesList.innerHTML = '';
-    var result = resp.filter(function (elem) {
+    var result = resp.filter((elem) => {
         console.log('elem.name', elem.name);
         console.log('countryName', countryName);
-        elem.name.includes(countryName);
-        return elem.name
+        return elem.name.includes(countryName);
     });
     resp.forEach(function (item) {
         var elementLi = document.createElement('li');
